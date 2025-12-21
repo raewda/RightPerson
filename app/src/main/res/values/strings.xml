@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">RightPerson</string>
+
+    <string name="com_google_android_gms_fonts_certs_dev_cert" translatable="false">...</string>
+    <string name="com_google_android_gms_fonts_certs_prod_cert" translatable="false">...</string>
 </resources>
