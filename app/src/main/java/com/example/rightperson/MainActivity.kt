@@ -12,6 +12,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rightperson.screens.Home
 import com.example.rightperson.screens.Negative
 import com.example.rightperson.screens.Positive
+import com.example.rightperson.screens.personScreens.AllPerson
+import com.example.rightperson.screens.personScreens.Person
+import com.example.rightperson.screens.personScreens.Result
 import com.example.rightperson.ui.theme.RightPersonTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,6 +27,9 @@ class MainActivity : ComponentActivity() {
                 val home = remember { mutableStateOf(false) }
                 val positive = remember { mutableStateOf(false) }
                 val negative = remember { mutableStateOf(false) }
+                val person = remember { mutableStateOf(false) }
+                val result = remember { mutableStateOf(false) }
+                val allPerson = remember { mutableStateOf(false) }
 
                 NavHost(
                     navController = navController,
@@ -47,6 +53,27 @@ class MainActivity : ComponentActivity() {
                         Negative(
                             navController,
                             negative
+                        )
+                    }
+
+                    composable("person"){
+                        Person(
+                            navController,
+                            person
+                        )
+                    }
+
+                    composable("result"){
+                        Result(
+                            navController,
+                            result
+                        )
+                    }
+
+                    composable("allPerson"){
+                        AllPerson(
+                            navController,
+                            allPerson
                         )
                     }
                 }
