@@ -1,5 +1,7 @@
 package com.example.rightperson.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.DrawerDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -43,6 +45,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.rightperson.screens.functions.Greetings
 import com.example.rightperson.ui.theme.displayFontFamily
 import com.example.rightperson.ui.theme.onPrimaryContainerLight
 import com.example.rightperson.ui.theme.onTertiaryContainerDark
@@ -50,6 +53,7 @@ import com.example.rightperson.ui.theme.primaryContainerDarkHighContrast
 import com.example.rightperson.ui.theme.primaryContainerDarkMediumContrast
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Home(
     navController : NavHostController,
@@ -59,7 +63,7 @@ fun Home(
         spec = LottieCompositionSpec.RawRes(R.raw.home)
     )
     val gradientColors = listOf(onPrimaryContainerLight, primaryContainerDarkHighContrast)
-    val reverseGradientColors = listOf(primaryContainerDarkHighContrast, onPrimaryContainerLight)
+    val reverseGradientColors = listOf(primaryContainerDarkMediumContrast, onTertiaryContainerDark)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -98,6 +102,22 @@ fun Home(
                             ){
                                 Text(
                                     "Negative",
+                                    style = AppTypography.headlineLarge,
+                                )
+                            }
+
+                            HorizontalDivider(
+                                modifier = Modifier
+                                    .fillMaxWidth(0.5f)
+                            )
+
+                            TextButton(
+                                onClick = {
+                                    navController.navigate("allPersons")
+                                }
+                            ){
+                                Text(
+                                    "All persons",
                                     style = AppTypography.headlineLarge,
                                 )
                             }
@@ -182,12 +202,13 @@ fun Home(
                                 isPlaying = true,
                                 iterations = LottieConstants.IterateForever
                             )
+
+                            Greetings()
                         }
                     }
                 }
             }
         }
     )
-
 }
 

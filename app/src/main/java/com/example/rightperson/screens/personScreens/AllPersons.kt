@@ -5,9 +5,9 @@ import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 
 @Composable
-fun AllPerson(
+fun AllPersons(
     navController : NavHostController,
-    allPerson : MutableState<Boolean>
+    allPersons : MutableState<Boolean>
 ){
 
 }
