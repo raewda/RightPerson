@@ -1,4 +1,4 @@
-package com.example.rightperson.screens.functions
+package com.example.rightperson.functions
 
 import android.os.Build
 import android.util.Log
