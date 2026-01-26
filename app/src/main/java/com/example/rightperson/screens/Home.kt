@@ -62,6 +62,7 @@ fun Home(
         spec = LottieCompositionSpec.RawRes(R.raw.home)
     )
     val gradientColors = listOf(onPrimaryContainerLight, primaryContainerDarkHighContrast)
+
     val reverseGradientColors = listOf(primaryContainerDarkMediumContrast, onTertiaryContainerDark)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
