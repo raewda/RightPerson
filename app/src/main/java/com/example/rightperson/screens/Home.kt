@@ -2,7 +2,6 @@ package com.example.rightperson.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -45,7 +44,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.example.rightperson.screens.functions.Greetings
+import com.example.rightperson.functions.Greetings
 import com.example.rightperson.ui.theme.displayFontFamily
 import com.example.rightperson.ui.theme.onPrimaryContainerLight
 import com.example.rightperson.ui.theme.onTertiaryContainerDark

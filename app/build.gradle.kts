@@ -55,8 +55,10 @@ dependencies {
     implementation(libs.androidx.compose.ui.text.google.fonts)
     implementation("com.airbnb.android:lottie-compose:6.7.1")
     implementation(libs.androidx.room.ktx)
-
     kapt("androidx.room:room-compiler:2.6.1")
+    implementation("dev.chrisbanes.haze:haze:1.6.10")
+    implementation("dev.chrisbanes.haze:haze-materials:1.6.10")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
