@@ -14,6 +14,9 @@ interface PersonDao {
     @Query("SELECT * FROM Person")
     fun getAllPerson(): Flow<List<Person>>
 
+    @Query("SELECT * FROM Person WHERE id = :id")
+    fun getByIdPerson(id: Int): Flow<Person?>
+
     @Insert
     suspend fun insert(item: Person)
 

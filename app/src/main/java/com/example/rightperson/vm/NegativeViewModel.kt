@@ -22,6 +22,8 @@ class NegativeViewModel : ViewModel(){
 
     fun getNegative(): Flow<List<Negative>> = db?.getNegativeDao()?.getAllNegative() ?: flowOf(listOf())
 
+    fun getByIdNegative(id : Int): Flow<Negative?> = db?.getNegativeDao()?.getByIdNegative(id) ?: flowOf(null)
+
     fun insertNegative(item: Negative){
         viewModelScope.launch {
             db?.getNegativeDao()?.insert(item)

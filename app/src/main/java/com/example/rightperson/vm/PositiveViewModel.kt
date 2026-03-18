@@ -24,6 +24,9 @@ class PositiveViewModel : ViewModel() {
     // реализуем функцию получения всех объектов класса (таблицы) Positive
     fun getPositive(): Flow<List<Positive>> = db?.getPositiveDao()?.getAllPositive() ?: flowOf(listOf())
 
+    // реализуем функцию получения 1 элемента из всех объектов Positive
+    fun getByIdPositive(id: Int): Flow<Positive?> = db?.getPositiveDao()?.getByIdPositive(id) ?: flowOf(null)
+
     // реализуем функцию вставки объекта в таблицу Positive
     fun insertPositive(item: Positive){
         viewModelScope.launch {

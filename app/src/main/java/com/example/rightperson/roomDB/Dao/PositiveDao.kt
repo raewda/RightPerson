@@ -8,12 +8,16 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.rightperson.roomDB.Tables.Positive
 import kotlinx.coroutines.flow.Flow
+import java.io.PipedOutputStream
 
 // Dao - Data Access Object - интерфейс для манипуляции данными в таблице (только для Room)
 @Dao
 interface PositiveDao {
     @Query("SELECT * FROM Positive") // сам запрос (при вызове функции cработает запрос)
     fun getAllPositive(): Flow<List<Positive>> // Flow - параллельно изменениям отображает их (возвращает список всех объектов класса - если появится новый объект, то он тут же его вернёт)
+
+    @Query("SELECT * FROM Positive WHERE id=:id") // получаем 1 объект
+    fun getByIdPositive(id: Int) : Flow<Positive?>
 
     @Insert // вставка в таблицу
     suspend fun insert(item: Positive) // передаём для вставки экземпляр класса

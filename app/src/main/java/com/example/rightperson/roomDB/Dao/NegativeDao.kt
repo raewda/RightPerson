@@ -8,12 +8,16 @@ import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
 import com.example.rightperson.roomDB.Tables.Negative
+import com.example.rightperson.roomDB.Tables.Positive
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NegativeDao {
     @Query("SELECT * FROM Negative")
     fun getAllNegative(): Flow<List<Negative>>
+
+    @Query("SELECT * FROM Negative WHERE id=:id")
+    fun getByIdNegative(id: Int) : Flow<Negative?>
 
     @Insert
     suspend fun insert(item: Negative)

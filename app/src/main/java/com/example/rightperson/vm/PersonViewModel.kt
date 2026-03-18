@@ -22,6 +22,8 @@ class PersonViewModel: ViewModel() {
 
     fun getPerson(): Flow<List<Person>> = db?.getPersonDao()?.getAllPerson() ?: flowOf(listOf())
 
+    fun getByIdPerson(id: Int): Flow<Person?> = db?.getPersonDao()?.getByIdPerson(id) ?: flowOf(null)
+
     fun insertPerson(item: Person){
         viewModelScope.launch {
             db?.getPersonDao()?.insert(item)
