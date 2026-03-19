@@ -7,4 +7,8 @@
     <string name="positive_info">
         Positive is the qualities you value in people, what\'s important to you in a person. When choosing your social circle or partner, you pay attention to the presence of these qualities.
     </string>
+
+    <string name="negative_info">
+        Negative are qualities that make you uncomfortable when interacting with people, and when choosing a social circle or partner, you will consider the absence of these qualities in a person.
+    </string>
 </resources>
