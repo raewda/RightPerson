@@ -3,4 +3,8 @@
 
     <string name="com_google_android_gms_fonts_certs_dev_cert" translatable="false">...</string>
     <string name="com_google_android_gms_fonts_certs_prod_cert" translatable="false">...</string>
+
+    <string name="positive_info">
+        Positive is the qualities you value in people, what\'s important to you in a person. When choosing your social circle or partner, you pay attention to the presence of these qualities.
+    </string>
 </resources>
