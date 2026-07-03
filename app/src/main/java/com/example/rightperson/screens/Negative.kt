@@ -247,7 +247,9 @@ fun Negative(
                             Text(
                                 "remove \"${
                                     negativeItem.value.title
-                                }\"?"
+                                }\"?",
+                                modifier = Modifier
+                                    .padding(bottom = 10.dp)
                             )
                             Button(
                                 onClick = {

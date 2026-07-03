@@ -248,7 +248,9 @@ fun Positive(
                             Text(
                                 "remove \"${
                                     positiveItem.value.title
-                                }\"?"
+                                }\"?",
+                                modifier = Modifier
+                                    .padding(bottom = 10.dp)
                             )
                             Button(
                                 onClick = {

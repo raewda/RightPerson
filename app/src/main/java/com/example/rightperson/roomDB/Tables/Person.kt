@@ -14,7 +14,9 @@ data class Person(
     @ColumnInfo
         val name: String? = "",
     @ColumnInfo
-        val result: Result? = Result.NeutralFlag
+        val result: Result? = Result.NeutralFlag,
+    @ColumnInfo
+        val percent: Int? = 50
 )
 
 

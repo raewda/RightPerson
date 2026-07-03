@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rightperson.roomDB.DB
+import com.example.rightperson.roomDB.Tables.Positive
 import com.example.rightperson.roomDB.Tables.ResumePositive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -21,6 +22,9 @@ class ResumePositiveViewModel: ViewModel() {
     }
 
     fun getAllResumePositive(): Flow<List<ResumePositive>> = db?.getResumePositiveDao()?.getAllResume() ?: flowOf(listOf())
+
+    fun getPositiveByPersonId(personId: Int): Flow<List<Positive>> =
+        db?.getResumePositiveDao()?.getPositiveByPersonId(personId) ?: flowOf(emptyList())
 
     fun insertResumePositive(item: ResumePositive){
         viewModelScope.launch {

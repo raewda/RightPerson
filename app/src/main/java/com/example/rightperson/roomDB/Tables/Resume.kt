@@ -10,12 +10,14 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = Person::class, // родительская таблица
             parentColumns = ["id"], // поле в родительской таблице
-            childColumns = ["personId"] // поле в этой таблице, которое будёт знаечние из другой таблицы
+            childColumns = ["personId"], // поле в этой таблице, которое будёт знаечние из другой таблицы
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = Positive::class,
             parentColumns = ["id"],
-            childColumns = ["positiveId"]
+            childColumns = ["positiveId"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
@@ -36,12 +38,14 @@ data class ResumePositive(
         ForeignKey(
             entity = Person::class,
             parentColumns = ["id"],
-            childColumns = ["personId"]
+            childColumns = ["personId"],
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = Negative::class,
             parentColumns = ["id"],
-            childColumns = ["negativeId"]
+            childColumns = ["negativeId"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
