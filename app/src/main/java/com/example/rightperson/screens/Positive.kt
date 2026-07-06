@@ -172,7 +172,7 @@ fun Positive(
 
                         ){
                             Text(
-                                text = item.title,
+                                text = item.title!!,
                                 modifier = Modifier
                                     .padding(horizontal = 7.dp, vertical = 3.dp),
                                 style = AppTypography.headlineSmall

@@ -11,5 +11,5 @@ data class Positive(
         @PrimaryKey(autoGenerate = true) // первичный ключ
             val id: Int? = null,
     @ColumnInfo
-        val title: String = ""
+        val title: String? = ""
 )
