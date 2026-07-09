@@ -76,10 +76,16 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable("result"){
+                    composable("result/{id}", arguments = listOf(
+                        navArgument("id"){
+                            NavType.StringType
+                        }
+                    )){
+                        val id = it.arguments?.getString("id")
                         Result(
                             navController,
-                            result
+                            result,
+                            id?.toInt()
                         )
                     }
 

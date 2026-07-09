@@ -18,7 +18,7 @@ interface PersonDao {
     fun getByIdPerson(id: Int): Flow<Person?>
 
     @Insert
-    suspend fun insert(item: Person)
+    suspend fun insert(item: Person): Long
 
     @Update(onConflict = REPLACE)
     suspend fun update(item: Person)

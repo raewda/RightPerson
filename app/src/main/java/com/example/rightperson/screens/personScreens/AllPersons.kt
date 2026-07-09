@@ -1,5 +1,6 @@
 package com.example.rightperson.screens.personScreens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -131,18 +132,25 @@ fun AllPersons(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(horizontal = 15.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     items(personList.value) { item ->
                         Card(
                             modifier = Modifier
-                                .fillMaxWidth(0.9f)
+                                .padding(vertical = 5.dp)
                                 .clickable{
                                     navController.navigate("person/${item.id}")
                                 },
-                            colors = CardDefaults.cardColors(onPrimaryContainerLight)
+                            border = BorderStroke(
+                                width = 1.dp,
+                                brush = Brush.linearGradient(
+                                    colors = gradientColors
+                                )
+                            )
                         ) {
                             Text(
-                                item.name!!,
+                                item.name.toString(),
                                 color = primaryContainerDarkHighContrast
                             )
                         }

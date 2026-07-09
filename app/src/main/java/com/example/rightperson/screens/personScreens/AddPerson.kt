@@ -1,5 +1,7 @@
 package com.example.rightperson.screens.personScreens
 
+import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +41,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -53,7 +56,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.rightperson.functions.CalculationResult
+import com.example.rightperson.roomDB.Result
 import com.example.rightperson.roomDB.Tables.Negative
+import com.example.rightperson.roomDB.Tables.Person
 import com.example.rightperson.roomDB.Tables.Positive
 import com.example.rightperson.roomDB.Tables.ResumeNegative
 import com.example.rightperson.roomDB.Tables.ResumePositive
@@ -72,6 +78,8 @@ import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
 import dev.chrisbanes.haze.rememberHazeState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalHazeMaterialsApi::class)
@@ -80,14 +88,16 @@ fun AddPerson(
     navController: NavHostController,
     addPerson: MutableState<Boolean>
 ) {
+    val scope = rememberCoroutineScope()
+
     val personVM: PersonViewModel = viewModel()
     personVM.initDB(context = WeakReference(LocalContext.current))
 
-    val positiveVM : PositiveViewModel = viewModel()
+    val positiveVM: PositiveViewModel = viewModel()
     positiveVM.initDB(context = WeakReference(LocalContext.current))
     val positiveList = positiveVM.getPositive().collectAsState(listOf())
 
-    val negativeVM : NegativeViewModel = viewModel()
+    val negativeVM: NegativeViewModel = viewModel()
     negativeVM.initDB(context = WeakReference(LocalContext.current))
     val negativeList = negativeVM.getNegative().collectAsState(listOf())
 
@@ -102,8 +112,6 @@ fun AddPerson(
     val dialogInfo = remember { mutableStateOf(false) }
     val dialogSelectPositive = remember { mutableStateOf(false) }
     val dialogSelectNegative = remember { mutableStateOf(false) }
-
-    val selectedNegativeQuality = remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier
@@ -160,7 +168,45 @@ fun AddPerson(
             )
         },
         floatingActionButton = {
+            TextButton(
+                onClick = {
+                    if (personName.value.text.isNotBlank() &&
+                        (positiveQualities.isNotEmpty() || negativeQualities.isNotEmpty())){
+                        val res : Pair<Int, Result> = CalculationResult(
+                            positiveQualities,
+                            negativeQualities
+                        )
+                        Log.d("result", res.first.toString())
 
+                        scope.launch(Dispatchers.Main) {
+                            val id = personVM.insertPerson(
+                                item = Person(
+                                    name = personName.value.text,
+                                    result = res.second,
+                                    percent = res.first
+                                )
+                            )
+                            navController.navigate("result/${id}")
+                        }
+                    }
+                },
+                border = BorderStroke(
+                    1.dp,
+                    brush = Brush.linearGradient(
+                        colors = gradientColors
+                    )
+                )
+            ) {
+                Text(
+                    "add person",
+                    style = TextStyle(
+                        brush = Brush.linearGradient(
+                            colors = gradientColors
+                        )
+                    ),
+                    fontSize = 16.sp,
+                )
+            }
         }
     ) { innerPadding ->
         Column(
@@ -245,7 +291,7 @@ fun AddPerson(
                         Card(
                             modifier = Modifier
                                 .padding(end = 5.dp, bottom = 10.dp)
-                        ){
+                        ) {
                             Text(
                                 text = item.title!!,
                                 modifier = Modifier
@@ -299,7 +345,7 @@ fun AddPerson(
                         Card(
                             modifier = Modifier
                                 .padding(end = 5.dp, bottom = 10.dp)
-                        ){
+                        ) {
                             Text(
                                 text = item.title!!,
                                 modifier = Modifier
@@ -311,7 +357,7 @@ fun AddPerson(
                 }
             }
 
-            if (dialogSelectPositive.value){
+            if (dialogSelectPositive.value) {
                 val selectedPositive = mutableListOf<Positive>()
                 Dialog(
                     onDismissRequest = {
@@ -355,25 +401,24 @@ fun AddPerson(
                                     Card(
                                         modifier = Modifier
                                             .padding(end = 5.dp, bottom = 10.dp)
-                                            .clickable{
-                                                selectedPositiveQuality.value = !selectedPositiveQuality.value
-                                                if (selectedPositive.contains(item) && !selectedPositiveQuality.value){
+                                            .clickable {
+                                                selectedPositiveQuality.value =
+                                                    !selectedPositiveQuality.value
+                                                if (selectedPositive.contains(item) && !selectedPositiveQuality.value) {
                                                     selectedPositive.remove(item)
-                                                }
-                                                else{
+                                                } else {
                                                     selectedPositive.add(item)
                                                 }
                                             },
                                         shape = CircleShape,
                                         colors = CardDefaults.cardColors(
-                                            if (selectedPositiveQuality.value){
+                                            if (selectedPositiveQuality.value) {
                                                 onPrimaryContainerLight
-                                            }
-                                            else{
+                                            } else {
                                                 Color.Transparent
                                             }
                                         )
-                                    ){
+                                    ) {
                                         Text(
                                             text = item.title!!,
                                             modifier = Modifier
@@ -408,7 +453,7 @@ fun AddPerson(
                 }
             }
 
-            if (dialogSelectNegative.value){
+            if (dialogSelectNegative.value) {
                 val selectedNegative = mutableListOf<Negative>()
                 Dialog(
                     onDismissRequest = {
@@ -452,25 +497,24 @@ fun AddPerson(
                                     Card(
                                         modifier = Modifier
                                             .padding(end = 5.dp, bottom = 10.dp)
-                                            .clickable{
-                                                selectedNegativeQuality.value = !selectedNegativeQuality.value
-                                                if (selectedNegative.contains(item) && !selectedNegativeQuality.value){
+                                            .clickable {
+                                                selectedNegativeQuality.value =
+                                                    !selectedNegativeQuality.value
+                                                if (selectedNegative.contains(item) && !selectedNegativeQuality.value) {
                                                     selectedNegative.remove(item)
-                                                }
-                                                else{
+                                                } else {
                                                     selectedNegative.add(item)
                                                 }
                                             },
                                         shape = CircleShape,
                                         colors = CardDefaults.cardColors(
-                                            if (selectedNegativeQuality.value){
+                                            if (selectedNegativeQuality.value) {
                                                 onPrimaryContainerLight
-                                            }
-                                            else{
+                                            } else {
                                                 Color.Transparent
                                             }
                                         )
-                                    ){
+                                    ) {
                                         Text(
                                             text = item.title!!,
                                             modifier = Modifier
