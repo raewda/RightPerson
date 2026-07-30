@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -54,6 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.rightperson.functions.CalculationResult
@@ -101,6 +103,12 @@ fun AddPerson(
     negativeVM.initDB(context = WeakReference(LocalContext.current))
     val negativeList = negativeVM.getNegative().collectAsState(listOf())
 
+    val resumePositiveVM: ResumePositiveViewModel = viewModel()
+    resumePositiveVM.initDB(context = WeakReference(LocalContext.current))
+
+    val resumeNegativeVM : ResumeNegativeViewModel = viewModel()
+    resumeNegativeVM.initDB(context = WeakReference(LocalContext.current))
+
     val hazeState = rememberHazeState()
     val gradientColors = listOf(primaryContainerDarkHighContrast, onPrimaryContainerLight)
 
@@ -135,6 +143,9 @@ fun AddPerson(
                             fontSize = 32.sp,
                             modifier = Modifier
                                 .padding(vertical = 5.dp)
+                                .clickable{
+                                    navController.navigateUp()
+                                }
                         )
 
                         IconButton(
@@ -186,6 +197,23 @@ fun AddPerson(
                                     percent = res.first
                                 )
                             )
+                            positiveQualities.forEach { item ->
+                                resumePositiveVM.insertResumePositive(
+                                    item = ResumePositive(
+                                        personId = id,
+                                        positiveId = item.id
+                                    )
+                                )
+                            }
+
+                            negativeQualities.forEach { item ->
+                                resumeNegativeVM.insertResumeNegative(
+                                    item = ResumeNegative(
+                                        personId = id,
+                                        negativeId = item.id
+                                    )
+                                )
+                            }
                             navController.navigate("result/${id}")
                         }
                     }
@@ -367,11 +395,13 @@ fun AddPerson(
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .wrapContentHeight()
                     ) {
                         Column(
                             modifier = Modifier
                                 .padding(15.dp)
                                 .fillMaxWidth()
+                                .wrapContentHeight()
                         ) {
                             Text(
                                 "POSITIVE QUALITIES",
@@ -382,7 +412,8 @@ fun AddPerson(
                                 ),
                                 fontSize = 20.sp,
                                 modifier = Modifier
-                                    .fillMaxWidth(),
+                                    .fillMaxWidth()
+                                    .padding(bottom = 10.dp),
                                 textAlign = TextAlign.Center
                             )
 
@@ -390,7 +421,6 @@ fun AddPerson(
                                 modifier = Modifier
                                     .padding(10.dp)
                                     .fillMaxWidth(0.9f)
-                                    .weight(1f)
                                     .verticalScroll(rememberScrollState()),
                                 horizontalArrangement = Arrangement.Start,
                                 verticalArrangement = Arrangement.Top,
@@ -463,11 +493,13 @@ fun AddPerson(
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .wrapContentHeight()
                     ) {
                         Column(
                             modifier = Modifier
                                 .padding(15.dp)
                                 .fillMaxWidth()
+                                .wrapContentHeight()
                         ) {
                             Text(
                                 "NEGATIVE QUALITIES",
@@ -478,7 +510,8 @@ fun AddPerson(
                                 ),
                                 fontSize = 20.sp,
                                 modifier = Modifier
-                                    .fillMaxWidth(),
+                                    .fillMaxWidth()
+                                    .padding(bottom = 10.dp),
                                 textAlign = TextAlign.Center
                             )
 
@@ -486,7 +519,6 @@ fun AddPerson(
                                 modifier = Modifier
                                     .padding(10.dp)
                                     .fillMaxWidth(0.9f)
-                                    .weight(1f)
                                     .verticalScroll(rememberScrollState()),
                                 horizontalArrangement = Arrangement.Start,
                                 verticalArrangement = Arrangement.Top,
@@ -548,7 +580,6 @@ fun AddPerson(
                     }
                 }
             }
-
         }
     }
 }

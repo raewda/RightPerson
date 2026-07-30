@@ -1,6 +1,8 @@
 package com.example.rightperson.screens.personScreens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -17,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -42,6 +46,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -90,9 +95,8 @@ fun Person(
     val hazeState = rememberHazeState()
     val gradientColors = listOf(primaryContainerDarkHighContrast, onPrimaryContainerLight)
 
-    val dialogInfoPositive = remember { mutableStateOf(false) }
-    val dialogInfoNegative = remember { mutableStateOf(false) }
     val dialogUpdate = remember { mutableStateOf(false) }
+    val dialogDelete = remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier
@@ -101,26 +105,28 @@ fun Person(
             TopAppBar(
                 title = {
                     if (personItem != null) {
-                        Row(
+                        Text(
+                            personItem!!.name!!,
+                            style = TextStyle(
+                                brush = Brush.linearGradient(
+                                    colors = gradientColors
+                                )
+                            ),
+                            fontFamily = displayFontFamily,
+                            fontSize = 24.sp,
                             modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                personItem!!.name!!,
-                                style = TextStyle(
-                                    brush = Brush.linearGradient(
-                                        colors = gradientColors
-                                    )
-                                ),
-                                fontFamily = displayFontFamily,
-                                fontSize = 32.sp,
-                                modifier = Modifier
-                                    .padding(vertical = 5.dp)
-                            )
-                        }
+                                .clickable{
+                                    navController.navigateUp()
+                                }
+                                .padding(vertical = 5.dp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            softWrap = false
+                        )
                     } else {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(
+                            color = primaryContainerDarkHighContrast
+                        )
                     }
                 },
                 expandedHeight = 40.dp,
@@ -141,6 +147,18 @@ fun Person(
                 actions = {
                     IconButton(
                         onClick = {
+
+                        }
+                    ) {
+                        Icon(
+                            Icons.Default.Delete,
+                            "delete person",
+                            tint = primaryContainerDarkHighContrast
+                        )
+                    }
+
+                    IconButton(
+                        onClick = {
                             dialogUpdate.value = !dialogUpdate.value
                         }
                     ) {
@@ -156,191 +174,159 @@ fun Person(
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .padding(innerPadding),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(innerPadding)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Card(
-                modifier = Modifier,
-                shape = RoundedCornerShape(40.dp)
-            ) {
-                Image(
-                    painter = if (personItem!!.result == Result.NeutralFlag) {
-                        painterResource(R.drawable.neutral_flag)
-                    } else if (personItem!!.result == Result.GreenFlag) {
-                        painterResource(R.drawable.green_flag)
-                    } else {
-                        painterResource(R.drawable.red_flag)
-                    },
-                    contentDescription = "image flag",
+            if (personItem != null) {
+                Card(
                     modifier = Modifier
-                        .size(50.dp)
-                )
-
-                Text(
-                    personItem!!.percent.toString(),
-                    modifier = Modifier,
-                    style = TextStyle(
+                        .padding(bottom = 20.dp)
+                        .size(height = 200.dp, width = 260.dp),
+                    shape = RoundedCornerShape(40.dp),
+                    colors = CardDefaults.cardColors(Color.Transparent),
+                    border = BorderStroke(
+                        1.dp,
                         brush = Brush.linearGradient(
                             colors = gradientColors
                         )
-                    ),
-                    fontFamily = displayFontFamily,
-                    fontSize = 50.sp
-                )
-            }
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .pointerInput(Unit) {
-                        detectTapGestures(
-                            onLongPress = {
-                                dialogInfoPositive.value = true
-                            }
-                        )
-                    },
-                shape = RoundedCornerShape(40.dp),
-                colors = CardDefaults.cardColors(primaryContainerDarkHighContrast)
-            ) {
-                Text(
-                    "POSITIVE QUALITIES",
-                    color = onPrimaryContainerLight,
-                    fontFamily = displayFontFamily,
-                    fontSize = 30.sp
-                )
-            }
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .pointerInput(Unit) {
-                        detectTapGestures(
-                            onLongPress = {
-                                dialogInfoNegative.value = true
-                            }
-                        )
-                    },
-                shape = RoundedCornerShape(40.dp),
-                colors = CardDefaults.cardColors(onPrimaryContainerLight)
-            ) {
-                Text(
-                    "NEGATIVE QUALITIES",
-                    color = primaryContainerDarkHighContrast,
-                    fontFamily = displayFontFamily,
-                    fontSize = 30.sp
-                )
-            }
-
-            if (dialogInfoPositive.value) {
-                Dialog(
-                    onDismissRequest = {
-                        dialogInfoPositive.value = false
-                    }
+                    )
                 ) {
-                    Card(
+                    Row(
                         modifier = Modifier
-                            .fillMaxWidth(0.9f)
-                            .fillMaxHeight(0.3f)
+                            .fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceAround
                     ) {
-                        Column(
+                        Image(
+                            painter = if (personItem!!.result == Result.NeutralFlag) {
+                                painterResource(R.drawable.neutral_flag)
+                            } else if (personItem!!.result == Result.GreenFlag) {
+                                painterResource(R.drawable.green_flag)
+                            } else {
+                                painterResource(R.drawable.red_flag)
+                            },
+                            contentDescription = "image flag",
                             modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 10.dp)
-                                .padding(vertical = 5.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(15.dp)
+                                .size(100.dp)
+                        )
+
+                        personItem!!.percent?.let {
+                            Text(
+                                text = if (it >= (100 - personItem!!.percent!!)){
+                                    personItem!!.percent.toString() + "%"
+                                } else{
+                                    (100 - personItem!!.percent!!).toString() + "%"
+                                },
+                                modifier = Modifier,
+                                style = TextStyle(
+                                    brush = Brush.linearGradient(
+                                        colors = gradientColors
+                                    )
+                                ),
+                                fontFamily = displayFontFamily,
+                                fontSize = 50.sp
+                            )
+                        }
+                    }
+                }
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .padding(vertical = 10.dp),
+                    shape = RoundedCornerShape(40.dp),
+                    colors = CardDefaults.cardColors(primaryContainerDarkHighContrast)
+                ) {
+                    Text(
+                        "POSITIVE QUALITIES",
+                        color = onPrimaryContainerLight,
+                        fontFamily = displayFontFamily,
+                        fontSize = 26.sp,
+                        modifier = Modifier
+                            .padding(10.dp)
+                    )
+                }
+                FlowRow(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .height(250.dp)
+                        .fillMaxWidth(0.9f)
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalArrangement = Arrangement.Top,
+                    maxItemsInEachRow = Int.MAX_VALUE
+                ) {
+                    positiveList.forEach { item ->
+                        Card(
+                            modifier = Modifier
+                                .padding(end = 5.dp, bottom = 10.dp)
                         ) {
                             Text(
-                                "POSITIVE QUALITIES",
-                                color = onPrimaryContainerLight,
-                                fontFamily = displayFontFamily,
-                                fontSize = 28.sp
-                            )
-
-                            FlowRow(
+                                text = item.title!!,
                                 modifier = Modifier
-                                    .padding(10.dp)
-                                    .fillMaxWidth(0.9f)
-                                    .weight(1f)
-                                    .verticalScroll(rememberScrollState()),
-                                horizontalArrangement = Arrangement.Start,
-                                verticalArrangement = Arrangement.Top,
-                                maxItemsInEachRow = Int.MAX_VALUE
-                            ) {
-                                positiveList.forEach { item ->
-                                    Card(
-                                        modifier = Modifier
-                                            .padding(end = 5.dp, bottom = 10.dp)
-                                    ) {
-                                        Text(
-                                            text = item.title!!,
-                                            modifier = Modifier
-                                                .padding(horizontal = 7.dp, vertical = 3.dp),
-                                            style = AppTypography.headlineSmall
-                                        )
-                                    }
-                                }
-                            }
+                                    .padding(
+                                        horizontal = 7.dp,
+                                        vertical = 3.dp
+                                    ),
+                                style = AppTypography.bodyMedium
+                            )
+                        }
+                    }
+                }
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .padding(vertical = 10.dp),
+                    shape = RoundedCornerShape(40.dp),
+                    colors = CardDefaults.cardColors(onPrimaryContainerLight)
+                ) {
+                    Text(
+                        "NEGATIVE QUALITIES",
+                        color = primaryContainerDarkHighContrast,
+                        fontFamily = displayFontFamily,
+                        fontSize = 26.sp,
+                        modifier = Modifier
+                            .padding(10.dp)
+                    )
+                }
+
+                FlowRow(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .height(300.dp)
+                        .fillMaxWidth(0.9f)
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalArrangement = Arrangement.Top,
+                    maxItemsInEachRow = Int.MAX_VALUE
+                ) {
+                    negativeList.forEach { item ->
+                        Card(
+                            modifier = Modifier
+                                .padding(end = 5.dp, bottom = 10.dp)
+                        ) {
+                            Text(
+                                text = item.title!!,
+                                modifier = Modifier
+                                    .padding(horizontal = 7.dp, vertical = 3.dp),
+                                style = AppTypography.bodyMedium
+                            )
                         }
                     }
                 }
             }
-            if (dialogInfoNegative.value) {
-                Dialog(
-                    onDismissRequest = {
-                        dialogInfoNegative.value = false
-                    }
-                ) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth(0.9f)
-                            .fillMaxHeight(0.3f)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 10.dp)
-                                .padding(vertical = 5.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(15.dp)
-                        ) {
-                            Text(
-                                "NEGATIVE QUALITIES",
-                                color = onPrimaryContainerLight,
-                                fontFamily = displayFontFamily,
-                                fontSize = 28.sp
-                            )
-
-                            FlowRow(
-                                modifier = Modifier
-                                    .padding(10.dp)
-                                    .fillMaxWidth(0.9f)
-                                    .weight(1f)
-                                    .verticalScroll(rememberScrollState()),
-                                horizontalArrangement = Arrangement.Start,
-                                verticalArrangement = Arrangement.Top,
-                                maxItemsInEachRow = Int.MAX_VALUE
-                            ) {
-                                negativeList.forEach { item ->
-                                    Card(
-                                        modifier = Modifier
-                                            .padding(end = 5.dp, bottom = 10.dp)
-                                    ) {
-                                        Text(
-                                            text = item.title!!,
-                                            modifier = Modifier
-                                                .padding(horizontal = 7.dp, vertical = 3.dp),
-                                            style = AppTypography.headlineSmall
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            else {
+                CircularProgressIndicator(
+                    color = primaryContainerDarkHighContrast
+                )
             }
-
-            // for dialogUpdate
         }
+
+        // for dialogUpdate
     }
 }

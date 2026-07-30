@@ -28,9 +28,7 @@ data class ResumePositive(
     @ColumnInfo
         val personId: Int? = null,
     @ColumnInfo
-        val positiveId: Int? = null,
-    @ColumnInfo
-        val has: Boolean? = false
+        val positiveId: Int? = null
 )
 
 @Entity(
@@ -56,7 +54,5 @@ data class ResumeNegative(
     @ColumnInfo
         val personId: Int? = null,
     @ColumnInfo
-        val negativeId: Int? = null,
-    @ColumnInfo
-        val has: Boolean? = false
+        val negativeId: Int? = null
 )

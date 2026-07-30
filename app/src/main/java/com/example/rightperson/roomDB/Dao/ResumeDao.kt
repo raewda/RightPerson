@@ -23,7 +23,7 @@ interface ResumePositiveDao {
 
     @Query("SELECT p.* FROM Positive p " +
             "INNER JOIN ResumePositive rp ON p.id = rp.positiveId " +
-            "WHERE rp.personId = :personId AND rp.has = 1"
+            "WHERE rp.personId = :personId"
     )
     fun getPositiveByPersonId(personId: Int): Flow<List<Positive>>
 }
@@ -41,7 +41,7 @@ interface ResumeNegativeDao {
 
     @Query("SELECT p.* FROM Negative p " +
             "INNER JOIN ResumeNegative rp ON p.id = rp.negativeId " +
-            "WHERE rp.personId = :personId AND rp.has = 1"
+            "WHERE rp.personId = :personId"
     )
     fun getNegativeByPersonId(personId: Int): Flow<List<Negative>>
 }
