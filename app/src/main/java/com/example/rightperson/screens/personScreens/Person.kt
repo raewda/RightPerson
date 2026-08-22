@@ -1,5 +1,6 @@
 package com.example.rightperson.screens.personScreens
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -46,6 +48,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -95,7 +98,6 @@ fun Person(
     val hazeState = rememberHazeState()
     val gradientColors = listOf(primaryContainerDarkHighContrast, onPrimaryContainerLight)
 
-    val dialogUpdate = remember { mutableStateOf(false) }
     val dialogDelete = remember { mutableStateOf(false) }
 
     Scaffold(
@@ -147,7 +149,7 @@ fun Person(
                 actions = {
                     IconButton(
                         onClick = {
-
+                            dialogDelete.value = !dialogDelete.value
                         }
                     ) {
                         Icon(
@@ -159,7 +161,7 @@ fun Person(
 
                     IconButton(
                         onClick = {
-                            dialogUpdate.value = !dialogUpdate.value
+                            navController.navigate("updatePerson/${id}")
                         }
                     ) {
                         Icon(
@@ -182,7 +184,7 @@ fun Person(
             if (personItem != null) {
                 Card(
                     modifier = Modifier
-                        .padding(bottom = 20.dp)
+                        .padding(bottom = 20.dp, top = 10.dp)
                         .size(height = 200.dp, width = 260.dp),
                     shape = RoundedCornerShape(40.dp),
                     colors = CardDefaults.cardColors(Color.Transparent),
@@ -327,6 +329,53 @@ fun Person(
             }
         }
 
-        // for dialogUpdate
+        if (dialogDelete.value){
+            Dialog(
+                onDismissRequest = {
+                    dialogDelete.value = false
+                }
+            ) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(0.7f)
+                        .fillMaxHeight(0.15f),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            "remove \"${
+                                personItem?.name
+                            }\"?",
+                            modifier = Modifier
+                                .padding(bottom = 10.dp)
+                                .fillMaxWidth(),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            softWrap = true,
+                            textAlign = TextAlign.Center
+                        )
+                        Button(
+                            onClick = {
+                                personVM.deletePerson(
+                                    item = personItem!!
+                                )
+                                dialogDelete.value = false
+                                navController.navigateUp()
+                            }
+                        ) {
+                            Text(
+                                "remove person"
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }

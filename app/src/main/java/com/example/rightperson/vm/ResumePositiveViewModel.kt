@@ -21,7 +21,7 @@ class ResumePositiveViewModel: ViewModel() {
         }
     }
 
-    fun getAllResumePositive(): Flow<List<ResumePositive>> = db?.getResumePositiveDao()?.getAllResume() ?: flowOf(listOf())
+    fun getAllPersonResumePositive(personId: Int?): Flow<List<ResumePositive>> = db?.getResumePositiveDao()?.getAllPersonResume(personId) ?: flowOf(listOf())
 
     fun getPositiveByPersonId(personId: Int): Flow<List<Positive>> =
         db?.getResumePositiveDao()?.getPositiveByPersonId(personId) ?: flowOf(emptyList())

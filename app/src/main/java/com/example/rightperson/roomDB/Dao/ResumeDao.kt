@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ResumePositiveDao {
-    @Query("SELECT * FROM ResumePositive")
-    fun getAllResume(): Flow<List<ResumePositive>>
+    @Query("SELECT * FROM ResumePositive WHERE personId = :personId")
+    fun getAllPersonResume(personId: Int?): Flow<List<ResumePositive>>
 
     @Insert
     suspend fun insert(item: ResumePositive)
@@ -26,12 +26,14 @@ interface ResumePositiveDao {
             "WHERE rp.personId = :personId"
     )
     fun getPositiveByPersonId(personId: Int): Flow<List<Positive>>
+
+
 }
 
 @Dao
 interface ResumeNegativeDao {
-    @Query("SELECT * FROM ResumeNegative")
-    fun getAllResume(): Flow<List<ResumeNegative>>
+    @Query("SELECT * FROM ResumeNegative WHERE personId = :personId")
+    fun getAllPersonResume(personId: Int?): Flow<List<ResumeNegative>>
 
     @Insert
     suspend fun insert(item: ResumeNegative)

@@ -21,7 +21,7 @@ class ResumeNegativeViewModel : ViewModel() {
         }
     }
 
-    fun getAllResumeNegative(): Flow<List<ResumeNegative>> = db?.getResumeNegativeDao()?.getAllResume() ?: flowOf(listOf())
+    fun getAllPersonResumeNegative(personId: Int?): Flow<List<ResumeNegative>> = db?.getResumeNegativeDao()?.getAllPersonResume(personId) ?: flowOf(listOf())
 
     fun getNegativeByPersonId(personId: Int): Flow<List<Negative>> =
         db?.getResumeNegativeDao()?.getNegativeByPersonId(personId) ?: flowOf(emptyList())

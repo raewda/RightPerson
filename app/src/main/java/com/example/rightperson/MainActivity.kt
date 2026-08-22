@@ -20,6 +20,7 @@ import com.example.rightperson.screens.personScreens.AddPerson
 import com.example.rightperson.screens.personScreens.AllPersons
 import com.example.rightperson.screens.personScreens.Person
 import com.example.rightperson.screens.personScreens.Result
+import com.example.rightperson.screens.personScreens.UpdatePerson
 import com.example.rightperson.ui.theme.RightPersonTheme
 
 class MainActivity : ComponentActivity() {
@@ -37,6 +38,7 @@ class MainActivity : ComponentActivity() {
                 val result = remember { mutableStateOf(false) }
                 val allPersons = remember { mutableStateOf(false) }
                 val addPerson = remember { mutableStateOf(false) }
+                val updatePerson = remember { mutableStateOf(false) }
 
                 NavHost(
                     navController = navController,
@@ -72,6 +74,19 @@ class MainActivity : ComponentActivity() {
                         Person(
                             navController,
                             person,
+                            id?.toInt()
+                        )
+                    }
+
+                    composable("updatePerson/{id}", arguments = listOf(
+                        navArgument("id"){
+                            NavType.StringType
+                        }
+                    )){
+                        val id = it.arguments?.getString("id")
+                        UpdatePerson(
+                            navController,
+                            updatePerson,
                             id?.toInt()
                         )
                     }

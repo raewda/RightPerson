@@ -157,12 +157,10 @@ fun AllPersons(
                                 .combinedClickable(
                                     onClick = {
                                         navController.navigate("person/${item.id}")
-                                        Log.d("ididid click", item.id.toString())
                                     },
                                     onLongClick = {
                                         dialogDelete.value = !dialogDelete.value
                                         personItem.value = item
-                                        Log.d("ididid press", item.id.toString())
                                     }
                                 ),
                             border = BorderStroke(
@@ -182,7 +180,6 @@ fun AllPersons(
                                 overflow = TextOverflow.Ellipsis,
                                 softWrap = false
                             )
-                            Log.d("ididid", item.id.toString())
                         }
 
                         if (dialogDelete.value){
