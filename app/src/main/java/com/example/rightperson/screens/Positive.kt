@@ -1,5 +1,6 @@
 package com.example.rightperson.screens
 
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -99,13 +101,14 @@ fun Positive(
                         fontSize = 32.sp,
                         modifier = Modifier
                             .padding(vertical = 5.dp)
-                            .pointerInput(Unit){
-                                detectTapGestures(
-                                    onLongPress = {
-                                        dialogInfo.value = !dialogInfo.value
-                                    }
-                                )
-                            }
+                            .combinedClickable(
+                                onClick = {
+                                    navController.navigateUp()
+                                },
+                                onLongClick = {
+                                    dialogInfo.value = !dialogInfo.value
+                                }
+                            ),
                     )
                 },
                 expandedHeight = 40.dp,
@@ -277,16 +280,13 @@ fun Positive(
                 ) {
                     Card(
                         modifier = Modifier
-                            .fillMaxWidth(0.9f)
-                            .fillMaxHeight(0.3f)
+                            .wrapContentSize()
                     ){
                        Column(
                            modifier = Modifier
-                               .fillMaxSize()
-                               .padding(horizontal = 10.dp)
+                               .padding(horizontal = 15.dp)
                                .padding(vertical = 5.dp),
-                           horizontalAlignment = Alignment.CenterHorizontally,
-                           verticalArrangement = Arrangement.spacedBy(15.dp)
+                           horizontalAlignment = Alignment.CenterHorizontally
                        ) {
                            Text(
                                "Info",
@@ -297,14 +297,15 @@ fun Positive(
                                ),
                                fontSize = 28.sp,
                                modifier = Modifier
-                                   .padding(vertical = 5.dp)
+                                   .padding(vertical = 15.dp)
                            )
                            Text(
                                stringResource(R.string.positive_info),
-                               softWrap = true
+                               softWrap = true,
+                               modifier = Modifier
+                                   .padding(bottom = 10.dp)
                            )
                        }
-
                     }
                 }
             }

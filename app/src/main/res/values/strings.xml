@@ -11,4 +11,12 @@
     <string name="negative_info">
         Negative are qualities that make you uncomfortable when interacting with people, and when choosing a social circle or partner, you will consider the absence of these qualities in a person.
     </string>
+    
+    <string name="all_persons_info">
+        Each person has both positive and negative qualities, and their combination allows us to form an objective picture of the personality in order to determine how suitable it is for specific goals or relationships.
+    </string>
+
+    <string name="add_person_info">
+        Each person has many different traits, and among them there may be qualities that you desire, as well as those that you would consider shortcomings - it is only important to determine their ratio.
+    </string>
 </resources>

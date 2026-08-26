@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,6 +50,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -58,6 +60,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.rightperson.R
 import com.example.rightperson.functions.CalculationResult
 import com.example.rightperson.roomDB.Result
 import com.example.rightperson.roomDB.Tables.Negative
@@ -576,6 +579,44 @@ fun AddPerson(
                                     textAlign = TextAlign.Center
                                 )
                             }
+                        }
+                    }
+                }
+            }
+
+            if (dialogInfo.value){
+                Dialog(
+                    onDismissRequest = {
+                        dialogInfo.value = false
+                    }
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .wrapContentSize()
+                    ){
+                        Column(
+                            modifier = Modifier
+                                .padding(horizontal = 15.dp)
+                                .padding(vertical = 5.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                "Info",
+                                style = TextStyle(
+                                    brush = Brush.linearGradient(
+                                        colors = gradientColors
+                                    )
+                                ),
+                                fontSize = 28.sp,
+                                modifier = Modifier
+                                    .padding(vertical = 15.dp)
+                            )
+                            Text(
+                                stringResource(R.string.add_person_info),
+                                softWrap = true,
+                                modifier = Modifier
+                                    .padding(bottom = 10.dp)
+                            )
                         }
                     }
                 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,6 +41,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -48,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.rightperson.R
 import com.example.rightperson.roomDB.Tables.Person
 import com.example.rightperson.ui.theme.AppTypography
 import com.example.rightperson.ui.theme.displayFontFamily
@@ -97,13 +100,14 @@ fun AllPersons(
                         fontSize = 32.sp,
                         modifier = Modifier
                             .padding(vertical = 5.dp)
-                            .pointerInput(Unit) {
-                                detectTapGestures(
-                                    onLongPress = {
-                                        dialogInfo.value = !dialogInfo.value
-                                    }
-                                )
-                            }
+                            .combinedClickable(
+                                onClick = {
+                                    navController.navigateUp()
+                                },
+                                onLongClick = {
+                                    dialogInfo.value = !dialogInfo.value
+                                }
+                            )
                     )
                 },
                 expandedHeight = 40.dp,
@@ -141,7 +145,7 @@ fun AllPersons(
             modifier = Modifier
                 .padding(innerPadding)
         ) {
-            if (personList.value.size != 0){
+            if (personList.value.size != 0) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -182,7 +186,7 @@ fun AllPersons(
                             )
                         }
 
-                        if (dialogDelete.value){
+                        if (dialogDelete.value) {
                             Dialog(
                                 onDismissRequest = {
                                     dialogDelete.value = false
@@ -232,8 +236,7 @@ fun AllPersons(
                         }
                     }
                 }
-            }
-            else if (personList == null){
+            } else if (personList == null) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -244,8 +247,7 @@ fun AllPersons(
                         color = primaryContainerDarkHighContrast
                     )
                 }
-            }
-            else{
+            } else {
                 Column(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -264,7 +266,41 @@ fun AllPersons(
         }
 
         if (dialogInfo.value){
-            // info
+            Dialog(
+                onDismissRequest = {
+                    dialogInfo.value = false
+                }
+            ) {
+                Card(
+                    modifier = Modifier
+                        .wrapContentSize()
+                ){
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = 15.dp)
+                            .padding(vertical = 5.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            "Info",
+                            style = TextStyle(
+                                brush = Brush.linearGradient(
+                                    colors = gradientColors
+                                )
+                            ),
+                            fontSize = 28.sp,
+                            modifier = Modifier
+                                .padding(vertical = 15.dp)
+                        )
+                        Text(
+                            stringResource(R.string.all_persons_info),
+                            softWrap = true,
+                            modifier = Modifier
+                                .padding(bottom = 10.dp)
+                        )
+                    }
+                }
+            }
         }
     }
 }
